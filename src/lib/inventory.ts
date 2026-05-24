@@ -202,7 +202,7 @@ export async function confirmReservation(
   }
 
   if (existing.expiresAt < new Date()) {
-    await releaseReservation(id, { reason: "expired" });
+    await releaseReservation(id);
     return {
       ok: false,
       status: 410,
@@ -246,7 +246,7 @@ export async function confirmReservation(
       return { ok: false, status: 404, message: "Reservation not found" };
     }
     if (current.expiresAt < new Date()) {
-      await releaseReservation(id, { reason: "expired" });
+      await releaseReservation(id);
       return {
         ok: false,
         status: 410,
@@ -269,8 +269,7 @@ export async function confirmReservation(
 }
 
 export async function releaseReservation(
-  id: string,
-  _options?: { reason?: "cancelled" | "expired" }
+  id: string
 ): Promise<
   | { ok: true; reservation: ReservationDto }
   | { ok: false; status: 404; message: string }

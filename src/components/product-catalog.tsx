@@ -38,9 +38,16 @@ export function ProductCatalog() {
   }, []);
 
   useEffect(() => {
-    load();
-    const interval = setInterval(load, 5000);
-    return () => clearInterval(interval);
+    const timeout = setTimeout(() => {
+      void load();
+    }, 0);
+    const interval = setInterval(() => {
+      void load();
+    }, 5000);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [load]);
 
   async function handleReserve(

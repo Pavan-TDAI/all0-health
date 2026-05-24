@@ -65,9 +65,16 @@ export function CheckoutPanel({ reservationId }: { reservationId: string }) {
   }, [reservationId]);
 
   useEffect(() => {
-    load();
-    const interval = setInterval(load, 2000);
-    return () => clearInterval(interval);
+    const timeout = setTimeout(() => {
+      void load();
+    }, 0);
+    const interval = setInterval(() => {
+      void load();
+    }, 2000);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [load]);
 
   const pending = reservation?.status === "PENDING";
