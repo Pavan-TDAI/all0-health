@@ -5,7 +5,7 @@ type Params = { params: Promise<{ id: string }> };
 
 export async function POST(_request: Request, { params }: Params) {
   const { id } = await params;
-  const outcome = await releaseReservation(id, { reason: "cancelled" });
+  const outcome = await releaseReservation(id);
 
   if (!outcome.ok) {
     return jsonResponse({
